@@ -60,7 +60,7 @@ class TaskBase(SQLModel):
         if (
             "due_date" in data
             and data["due_date"]
-            and data["due_date"] < datetime.now(timezone.utc)
+            and datetime.fromisoformat(data["due_date"]) < datetime.now(timezone.utc)
         ):
             raise ValueError("Due date cannot be in the past")
 
@@ -169,7 +169,7 @@ class TaskUpdate(SQLModel):
         if (
             "due_date" in data
             and data["due_date"]
-            and data["due_date"] < datetime.now(timezone.utc)
+            and datetime.fromisoformat(data["due_date"]) < datetime.now(timezone.utc)
         ):
             raise ValueError("Due date cannot be in the past")
 
