@@ -66,9 +66,7 @@ class TaskRepository:
             ValidationError: If the retrieved task does not conform to the expected model.
         """
 
-        statement = select(Task).where(Task.id == task_id)
-        result = await session.execute(statement)
-        task = result.first()
+        task = await session.get(Task, task_id)
 
         if task:
             return TaskPublic.model_validate(task)
@@ -123,8 +121,8 @@ class TaskRepository:
         if limit:
             statement = statement.limit(limit)
 
-        result = await session.execute(statement)
-        tasks = result.all()
+        tasks = await session.scalars(statement)
+        tasks = tasks.all()
 
         return [TaskPublic.model_validate(task) for task in tasks]
 
@@ -148,9 +146,7 @@ class TaskRepository:
                 If the provided task update data does not conform to the expected model.
         """
 
-        statement = select(Task).where(Task.id == task_id)
-        result = await session.execute(statement)
-        task = result.first()
+        task = await session.get(Task, task_id)
 
         if not task:
             return None
@@ -180,9 +176,7 @@ class TaskRepository:
             ValidationError: If the task ID does not conform to the expected model.
         """
 
-        statement = select(Task).where(Task.id == task_id)
-        result = await session.execute(statement)
-        task = result.first()
+        task = await session.get(Task, task_id)
 
         if not task:
             return False
