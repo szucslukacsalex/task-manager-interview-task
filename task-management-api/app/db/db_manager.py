@@ -29,7 +29,7 @@ class DatabaseManager:
     def __init__(self, database_url: str = "sqlite+aiosqlite:///./task_management.db"):
         self.database_url = database_url
         self.engine = create_async_engine(
-            self.database_url, echo=True, future=True, pool_pre_ping=True
+            self.database_url, echo=False, future=True, pool_pre_ping=True
         )
         self.async_session = async_sessionmaker(
             bind=self.engine, class_=AsyncSession, expire_on_commit=False
