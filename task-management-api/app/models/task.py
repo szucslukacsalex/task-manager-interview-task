@@ -174,3 +174,25 @@ class TaskUpdate(SQLModel):
             raise ValueError("Due date cannot be in the past")
 
         super().__init__(**data)
+
+
+class TaskSuggestion(SQLModel):
+    """Represents a suggestion for a task, including a proposed title,
+    description, confidence score, and reasoning.
+
+    Attributes:
+        suggested_title (str): Suggested task title.
+        confidence_score (float): Confidence score for the suggestion, between 0 and 1.
+        reasoning (str): Explanation for why this suggestion was made.
+        suggested_description (str): Suggested description for the task.
+        Defaults to an empty string.
+    """
+
+    suggested_title: str = Field(description="Suggested task title")
+    confidence_score: float = Field(
+        ge=0.0, le=1.0, description="Confidence score (0-1)"
+    )
+    reasoning: str = Field(description="Explanation for the suggestion")
+    suggested_description: str = Field(
+        default="", description="Suggested task description"
+    )

@@ -170,7 +170,7 @@ class TaskRepository:
 
         Returns:
             bool: True if the task was successfully deleted, False if the task was not found.
-        
+
         Raises:
             SQLAlchemyError: If there's a database error during task deletion.
             ValidationError: If the task ID does not conform to the expected model.
@@ -184,3 +184,17 @@ class TaskRepository:
         await session.delete(task)
         await session.commit()
         return True
+
+    async def get_all_tasks_for_analysis(
+        self, session: AsyncSession
+    ) -> List[TaskPublic]:
+        """Retrieve up to 1000 tasks for analysis purposes.
+
+        Args:
+            session (AsyncSession): The asynchronous database session.
+
+        Returns:
+            List[TaskPublic]: A list of up to 1000 public task representations.
+        """
+
+        return await self.get_tasks(session, limit=1000)
